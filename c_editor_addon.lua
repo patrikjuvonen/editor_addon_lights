@@ -57,7 +57,8 @@ local function createLight(element)
     if (isElement(lightMatrix[element])) then
         if (getElementType(lightMatrix[source]) == "searchlight") then
             destroyElement(lightMatrix[source])
-        else
+        elseif (not getElementData(lightMatrix[source], "deleting")) then
+            setElementData(lightMatrix[source], "deleting", true, false)
             call(getResourceFromName("dl_lightmanager"), "destroyLight", lightMatrix[source])
         end
     end
@@ -82,31 +83,41 @@ local function createLight(element)
         )
         setElementDimension(lightMatrix[element], dimension)
         setElementInterior(lightMatrix[element], interior)
-    elseif (lightType == "DLPointLight") then
-        lightMatrix[element] = call(
-            getResourceFromName("dl_lightmanager"), "createPointLight",
-            x, y, z,
-            r, g, b, a,
-            attenuation,
-            exports.edf:edfGetElementProperty(element, "generateNormals") == "true", exports.edf:edfGetElementProperty(element, "skipNormals") == "true", dimension, interior
-        )
+    else
+        if (lightType == "DLPointLight") then
+            lightMatrix[element] = call(
+                getResourceFromName("dl_lightmanager"), "createPointLight",
+                x, y, z,
+                r, g, b, a,
+                attenuation,
+                exports.edf:edfGetElementProperty(element, "generateNormals") == "true", exports.edf:edfGetElementProperty(element, "skipNormals") == "true", dimension, interior
+            )
+        elseif (lightType == "DLSpotLight") then
+            lightMatrix[element] = call(
+                getResourceFromName("dl_lightmanager"), "createSpotLight",
+                x, y, z,
+                r, g, b, a,
+                tx, ty, tz,
+                exports.edf:edfGetElementProperty(element, "falloff") or 5,
+                exports.edf:edfGetElementProperty(element, "theta") or 5,
+                exports.edf:edfGetElementProperty(element, "phi") or 10,
+                attenuation,
+                exports.edf:edfGetElementProperty(element, "generateNormals") == "true", exports.edf:edfGetElementProperty(element, "skipNormals") == "true", dimension, interior
+            )
+        end
+
         call(getResourceFromName("dl_lightmanager"), "setLightDimension", lightMatrix[element], dimension)
         call(getResourceFromName("dl_lightmanager"), "setLightInterior", lightMatrix[element], interior)
-    elseif (lightType == "DLSpotLight") then
-        lightMatrix[element] = call(
-            getResourceFromName("dl_lightmanager"), "createSpotLight",
-            x, y, z,
-            r, g, b, a,
-            tx, ty, tz,
-            exports.edf:edfGetElementProperty(element, "falloff") or 5,
-            exports.edf:edfGetElementProperty(element, "theta") or 5,
-            exports.edf:edfGetElementProperty(element, "phi") or 10,
-            attenuation,
-            exports.edf:edfGetElementProperty(element, "generateNormals") == "true", exports.edf:edfGetElementProperty(element, "skipNormals") == "true", dimension, interior
-        )
-        call(getResourceFromName("dl_lightmanager"), "setLightDimension", lightMatrix[element], dimension)
-        call(getResourceFromName("dl_lightmanager"), "setLightInterior", lightMatrix[element], interior)
+
+        addEventHandler("onClientElementDestroy", lightMatrix[element], function ()
+            if (getElementData(source, "deleting")) then return end
+
+            setElementData(source, "deleting", true, false)
+            call(getResourceFromName("dl_lightmanager"), "destroyLight", source)
+        end)
     end
+
+    setElementParent(lightMatrix[element], element)
 
     setElementAlpha(getRepresentation(element, "marker"), 0)
 end
@@ -122,7 +133,8 @@ local function localCleanUp()
     if (isElement(lightMatrix[source])) then
         if (getElementType(lightMatrix[source]) == "searchlight") then
             destroyElement(lightMatrix[source])
-        else
+        elseif (not getElementData(lightMatrix[source], "deleting")) then
+            setElementData(lightMatrix[source], "deleting", true, false)
             call(getResourceFromName("dl_lightmanager"), "destroyLight", lightMatrix[source])
         end
     end
@@ -220,7 +232,8 @@ function onStop()
         if (isElement(light)) then
             if (getElementType(light) == "searchlight") then
                 destroyElement(light)
-            else
+            elseif (not getElementData(light, "deleting")) then
+                setElementData(light, "deleting", true, false)
                 call(getResourceFromName("dl_lightmanager"), "destroyLight", light)
             end
         end
