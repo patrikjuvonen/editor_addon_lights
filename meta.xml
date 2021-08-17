@@ -25,7 +25,7 @@
     SOFTWARE.
 -->
 <meta>
-    <info type="script" name="Lights Add-on for Map Editor" description="(Beta) An add-on for the Map Editor to create and edit lights." author="patrikjuvonen" version="0.1.1" edf:definition="editor_addon_lights.edf" />
+    <info type="script" name="Lights Add-on for Map Editor" description="(Beta) An add-on for the Map Editor to create and edit lights." author="patrikjuvonen" version="0.1.2" edf:definition="editor_addon_lights.edf" />
 
     <file src="icon.png" />
 
