@@ -45,5 +45,6 @@
         <marker color="#ffffff" type="corona" size="2" />
     </element>
 
+    <script src="s_editor_addon.lua" type="server" />
     <script src="c_editor_addon.lua" type="client" />
 </def>
