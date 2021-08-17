@@ -108,8 +108,6 @@ local function createLight(element)
         call(getResourceFromName("dl_lightmanager"), "setLightInterior", lightMatrix[element], interior)
     end
 
-    setElementParent(lightMatrix[element], element)
-
     setElementAlpha(getRepresentation(element, "marker"), 0)
 end
 
