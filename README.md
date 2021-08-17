@@ -25,10 +25,11 @@ Once you've installed the prerequisities, we can install this resource!
 1. Start the map editor resource (`editor`) or enter the Map Editor from the main menu
 2. Click "definitions" from the top editor menu
 3. Add "editor_addon_lights" to your definitions and press OK
-4. Hover on the buttons in the bottom-left corner, and scroll your mouse wheel once
-5. Click the "Light" button to place a new light into the game world
-6. Double-click the light to change its properties
-7. Once you've finished with your map, save the map in a resource
+4. `dl_lightmanager` resource should have been automatically started, if this is not the case, please start it manually
+5. Hover on the buttons in the bottom-left corner, and scroll your mouse wheel once
+6. Click the "Light" button to place a new light into the game world
+7. Double-click the light to change its properties
+8. Once you've finished with your map, save the map in a resource
 
 ## How to use with a saved map
 
