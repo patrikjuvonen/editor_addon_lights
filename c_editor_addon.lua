@@ -64,7 +64,9 @@ local function createLight(element)
 
     local lightType = exports.edf:edfGetElementProperty(element, "type")
     local x, y, z = exports.edf:edfGetElementPosition(element)
-    local tx, ty, tz = unpack(exports.edf:edfGetElementProperty(element, "target"))
+    local _, _, rz = exports.edf:edfGetElementRotation(element)
+    local _tx, _ty, tz = unpack(exports.edf:edfGetElementProperty(element, "target"))
+    local tx, ty = x + (_tx - x) * math.cos(math.rad(rz)) - (_ty - y) * math.sin(math.rad(rz)), y + (_tx - x) * math.sin(math.rad(rz)) + (_ty - y) * math.cos(math.rad(rz))
     local r, g, b, a = hex2rgba(exports.edf:edfGetElementProperty(element, "color"))
     local attenuation = exports.edf:edfGetElementProperty(element, "attenuation") or 5
     local dimension = exports.edf:edfGetElementDimension(element) or 0
