@@ -193,7 +193,9 @@ end)
 addEventHandler("onClientElementDimensionChange", localPlayer, function (_, newDimension)
     for element, light in pairs(lightMatrix) do
         if (getElementDimension(element) == newDimension) then
-            createLight(element)
+            if (isElement(element)) then
+                createLight(element)
+            end
         elseif (isElement(light)) then
             if (getElementType(light) == "searchlight") then
                 destroyElement(light)
@@ -207,7 +209,9 @@ end)
 addEventHandler("onClientElementInteriorChange", localPlayer, function (_, newInterior)
     for element, light in pairs(lightMatrix) do
         if (getElementInterior(element) == newInterior) then
-            createLight(element)
+            if (isElement(element)) then
+                createLight(element)
+            end
         elseif (isElement(light)) then
             if (getElementType(light) == "searchlight") then
                 destroyElement(light)
