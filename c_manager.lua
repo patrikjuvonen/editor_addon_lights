@@ -60,8 +60,6 @@ local function createLight(element)
                 else
                     call(getResourceFromName("dl_lightmanager"), "destroyLight", lightMatrix[source])
                 end
-
-                lightMatrix[source] = nil
             end
         end)
 
@@ -74,8 +72,6 @@ local function createLight(element)
                 else
                     call(getResourceFromName("dl_lightmanager"), "destroyLight", lightMatrix[source])
                 end
-
-                lightMatrix[source] = nil
             end
         end)
     end
@@ -153,8 +149,6 @@ local function createLight(element)
             else
                 call(getResourceFromName("dl_lightmanager"), "destroyLight", source)
             end
-
-            lightMatrix[getElementParent(source)] = nil
         end)
 
         addEventHandler("onClientElementInteriorChange", lightMatrix[element], function (_, newInterior)
@@ -166,8 +160,6 @@ local function createLight(element)
             else
                 call(getResourceFromName("dl_lightmanager"), "destroyLight", source)
             end
-
-            lightMatrix[getElementParent(source)] = nil
         end)
     end
 end
@@ -208,8 +200,6 @@ addEventHandler("onClientElementDimensionChange", localPlayer, function (_, newD
             else
                 call(getResourceFromName("dl_lightmanager"), "destroyLight", source)
             end
-
-            lightMatrix[element] = nil
         end
     end
 end)
@@ -224,8 +214,6 @@ addEventHandler("onClientElementInteriorChange", localPlayer, function (_, newIn
             else
                 call(getResourceFromName("dl_lightmanager"), "destroyLight", source)
             end
-
-            lightMatrix[element] = nil
         end
     end
 end)
