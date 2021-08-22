@@ -180,7 +180,7 @@ addEventHandler("onClientResourceStop", resourceRoot, function ()
     for element, light in pairs(lightMatrix) do
         if (isElement(light)) then
             if (getElementType(light) == "searchlight") then
-                destroyElement(source)
+                destroyElement(light)
             else
                 call(getResourceFromName("dl_lightmanager"), "destroyLight", light)
             end
@@ -195,10 +195,10 @@ addEventHandler("onClientElementDimensionChange", localPlayer, function (_, newD
         if (getElementDimension(element) == newDimension) then
             createLight(element)
         elseif (isElement(light)) then
-            if (getElementType(source) == "searchlight") then
-                destroyElement(source)
+            if (getElementType(light) == "searchlight") then
+                destroyElement(light)
             else
-                call(getResourceFromName("dl_lightmanager"), "destroyLight", source)
+                call(getResourceFromName("dl_lightmanager"), "destroyLight", light)
             end
         end
     end
@@ -209,10 +209,10 @@ addEventHandler("onClientElementInteriorChange", localPlayer, function (_, newIn
         if (getElementInterior(element) == newInterior) then
             createLight(element)
         elseif (isElement(light)) then
-            if (getElementType(source) == "searchlight") then
-                destroyElement(source)
+            if (getElementType(light) == "searchlight") then
+                destroyElement(light)
             else
-                call(getResourceFromName("dl_lightmanager"), "destroyLight", source)
+                call(getResourceFromName("dl_lightmanager"), "destroyLight", light)
             end
         end
     end
