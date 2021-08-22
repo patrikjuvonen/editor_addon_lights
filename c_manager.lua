@@ -43,49 +43,56 @@ local function createLight(element)
         end
     end
 
-    setElementDimension(element, getElementData(element, "dimension"))
-    setElementInterior(element, getElementData(element, "interior"))
+    local existed = lightMatrix[element] ~= nil
 
-    addEventHandler("onClientElementDimensionChange", element, function (_, newDimension)
-        if (newDimension == getElementDimension(localPlayer)) then
-            createLight(source)
-        elseif (isElement(lightMatrix[source])) then
-            if (getElementType(lightMatrix[source]) == "searchlight") then
-                destroyElement(lightMatrix[source])
-            else
-                call(getResourceFromName("dl_lightmanager"), "destroyLight", lightMatrix[source])
+    lightMatrix[element] = true
+
+    if (not existed) then
+        setElementDimension(element, getElementData(element, "dimension"))
+        setElementInterior(element, getElementData(element, "interior"))
+
+        addEventHandler("onClientElementDimensionChange", element, function (_, newDimension)
+            if (newDimension == getElementDimension(localPlayer)) then
+                createLight(source)
+            elseif (isElement(lightMatrix[source])) then
+                if (getElementType(lightMatrix[source]) == "searchlight") then
+                    destroyElement(lightMatrix[source])
+                else
+                    call(getResourceFromName("dl_lightmanager"), "destroyLight", lightMatrix[source])
+                end
+
+                lightMatrix[source] = nil
             end
+        end)
 
-            lightMatrix[source] = nil
-        end
-    end)
+        addEventHandler("onClientElementInteriorChange", element, function (_, newInterior)
+            if (newInterior == getElementInterior(localPlayer)) then
+                createLight(source)
+            elseif (isElement(lightMatrix[source])) then
+                if (getElementType(lightMatrix[source]) == "searchlight") then
+                    destroyElement(lightMatrix[source])
+                else
+                    call(getResourceFromName("dl_lightmanager"), "destroyLight", lightMatrix[source])
+                end
 
-    addEventHandler("onClientElementInteriorChange", element, function (_, newInterior)
-        if (newInterior == getElementInterior(localPlayer)) then
-            createLight(source)
-        elseif (isElement(lightMatrix[source])) then
-            if (getElementType(lightMatrix[source]) == "searchlight") then
-                destroyElement(lightMatrix[source])
-            else
-                call(getResourceFromName("dl_lightmanager"), "destroyLight", lightMatrix[source])
+                lightMatrix[source] = nil
             end
+        end)
+    end
 
-            lightMatrix[source] = nil
-        end
-    end)
-
-    local lightType = getElementData(element, "type")
-    local x, y, z = getElementPosition(element)
-    local rx, ry, rz = tonumber(getElementData(element, "rotX")), tonumber(getElementData(element, "rotY")), tonumber(getElementData(element, "rotZ"))
-    local tx, ty, tz = unpack(split(getElementData(element, "target"), ","))
-    tx, ty, tz = tonumber(tx), tonumber(ty), tonumber(tz)
-    local r, g, b, a = hex2rgba(getElementData(element, "color"))
-    r, g, b, a = tonumber(r), tonumber(g), tonumber(b), tonumber(a)
-    local attenuation = tonumber(getElementData(element, "attenuation")) or 5
     local dimension = getElementDimension(element)
     local interior = getElementInterior(element)
 
-    if (getElementDimension(element) == getElementDimension(localPlayer)) and (getElementInterior(element) == getElementInterior(localPlayer)) then
+    if (dimension == getElementDimension(localPlayer)) and (interior == getElementInterior(localPlayer)) then
+        local lightType = getElementData(element, "type")
+        local x, y, z = getElementPosition(element)
+        local rx, ry, rz = tonumber(getElementData(element, "rotX")), tonumber(getElementData(element, "rotY")), tonumber(getElementData(element, "rotZ"))
+        local tx, ty, tz = unpack(split(getElementData(element, "target"), ","))
+        tx, ty, tz = tonumber(tx), tonumber(ty), tonumber(tz)
+        local r, g, b, a = hex2rgba(getElementData(element, "color"))
+        r, g, b, a = tonumber(r), tonumber(g), tonumber(b), tonumber(a)
+        local attenuation = tonumber(getElementData(element, "attenuation")) or 5
+
         if (lightType == "GTASearchLight") then
             lightMatrix[element] = createSearchLight(
                 x, y, z,
